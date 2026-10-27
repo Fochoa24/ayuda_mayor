@@ -3,44 +3,44 @@
 @theme {
   --font-sans: 'Atkinson Hyperlegible', system-ui, -apple-system, sans-serif;
 
-  --color-azul-50: #eff6ff;
-  --color-azul-100: #dbeafe;
-  --color-azul-200: #bfdbfe;
-  --color-azul-400: #60a5fa;
-  --color-azul-500: #2563eb;
-  --color-azul-600: #1d4ed8;
-  --color-azul-700: #1e40af;
-  --color-azul-800: #1e3a5f;
-  --color-azul-900: #0f2440;
+  --color-azul-50: #f0fdfa;
+  --color-azul-100: #ccfbf1;
+  --color-azul-200: #99f6e4;
+  --color-azul-400: #2dd4bf;
+  --color-azul-500: #0d9488;
+  --color-azul-600: #0f766e;
+  --color-azul-700: #115e59;
+  --color-azul-800: #134e4a;
+  --color-azul-900: #042f2e;
 
-  --color-verde-50: #f0fdf4;
-  --color-verde-400: #4ade80;
-  --color-verde-500: #22c55e;
-  --color-verde-600: #16a34a;
-  --color-verde-700: #15803d;
+  --color-verde-50: #f0fdf0;
+  --color-verde-400: #5cb85c;
+  --color-verde-500: #4caf50;
+  --color-verde-600: #3d8b3d;
+  --color-verde-700: #2d6a2d;
 
-  --color-naranja-50: #fff7ed;
-  --color-naranja-400: #fb923c;
-  --color-naranja-500: #f97316;
-  --color-naranja-600: #ea580c;
+  --color-naranja-50: #fffbeb;
+  --color-naranja-400: #f59e0b;
+  --color-naranja-500: #d97706;
+  --color-naranja-600: #b45309;
 
   --color-rojo-50: #fef2f2;
-  --color-rojo-500: #ef4444;
-  --color-rojo-600: #dc2626;
+  --color-rojo-500: #dc2626;
+  --color-rojo-600: #b91c1c;
 
-  --color-gris-50: #f9fafb;
-  --color-gris-100: #f3f4f6;
-  --color-gris-200: #e5e7eb;
-  --color-gris-300: #d1d5db;
-  --color-gris-400: #9ca3af;
-  --color-gris-500: #6b7280;
-  --color-gris-600: #4b5563;
-  --color-gris-700: #374151;
-  --color-gris-800: #1f2937;
-  --color-gris-900: #111827;
+  --color-gris-50: #fafaf9;
+  --color-gris-100: #f5f5f4;
+  --color-gris-200: #e7e5e4;
+  --color-gris-300: #d6d3d1;
+  --color-gris-400: #a8a29e;
+  --color-gris-500: #78716c;
+  --color-gris-600: #57534e;
+  --color-gris-700: #44403c;
+  --color-gris-800: #292524;
+  --color-gris-900: #1c1917;
 
-  --color-dorado-400: #facc15;
-  --color-dorado-500: #eab308;
+  --color-dorado-400: #f59e0b;
+  --color-dorado-500: #d97706;
 }
 
 @layer base {

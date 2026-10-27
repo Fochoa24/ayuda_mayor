@@ -1,10 +1,12 @@
 import { useState, useCallback } from 'react';
+import { useAuth } from '../contexts/AuthContext';
+import { saveHelpRequest } from '../lib/supabase';
 import Header from './Header';
 import ProgressBar from './ProgressBar';
 
-export default function GuideStep({ procedure, onComplete, onBack, userProgress }) {
+export default function GuideStep({ procedure, onComplete, onBack }) {
+  const { user } = useAuth();
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
-  const [helpCount, setHelpCount] = useState(0);
   const [stepHelpNeeded, setStepHelpNeeded] = useState({});
   const [showTip, setShowTip] = useState(false);
   const [showHelpModal, setShowHelpModal] = useState(false);
@@ -43,10 +45,18 @@ export default function GuideStep({ procedure, onComplete, onBack, userProgress 
     }
   };
 
-  const handleAskHelp = () => {
-    setHelpCount(prev => prev + 1);
+  const handleAskHelp = async () => {
     setStepHelpNeeded(prev => ({ ...prev, [currentStep.id]: true }));
     setShowHelpModal(true);
+
+    // Save help request to Supabase
+    if (user) {
+      try {
+        await saveHelpRequest(user.id, procedure.id, currentStep.id);
+      } catch (err) {
+        console.error('Error saving help request:', err);
+      }
+    }
   };
 
   const getMockVisual = (action) => {

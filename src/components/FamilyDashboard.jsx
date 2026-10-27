@@ -1,6 +1,6 @@
 import Header from './Header';
 
-export default function FamilyDashboard({ userData, procedureHistory, onBack }) {
+export default function FamilyDashboard({ userData, procedureHistory, onBack, onInvite, isLinked }) {
   const totalProcedures = procedureHistory.length;
   const soloProcedures = procedureHistory.filter(p => p.neededHelp === 0).length;
   const avgIndependence = totalProcedures > 0
@@ -38,59 +38,81 @@ export default function FamilyDashboard({ userData, procedureHistory, onBack }) 
       />
 
       <main className="max-w-2xl mx-auto px-4 py-8 space-y-8">
-        {/* User Profile */}
-        <div className="card flex items-center gap-4 sm:gap-5">
-          <div className="w-16 h-16 sm:w-20 sm:h-20 bg-azul-100 rounded-full flex items-center justify-center text-3xl sm:text-4xl flex-shrink-0">
-            👵
+        {/* User Profile or Invite Prompt */}
+        {isLinked ? (
+          <div className="card flex items-center gap-4 sm:gap-5">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 bg-azul-100 rounded-full flex items-center justify-center text-3xl sm:text-4xl flex-shrink-0">
+              👵
+            </div>
+            <div className="flex-1 min-w-0">
+              <h2 className="text-xl sm:text-2xl font-bold text-gris-900 truncate">{userData.name} {userData.lastName}</h2>
+              <p className="text-lg text-gris-500">{userData.age} años</p>
+              <p className="text-sm text-gris-400 mt-1">Vinculada como familiar</p>
+            </div>
           </div>
-          <div className="flex-1 min-w-0">
-            <h2 className="text-xl sm:text-2xl font-bold text-gris-900 truncate">{userData.name} {userData.lastName}</h2>
-            <p className="text-lg text-gris-500">{userData.age} años</p>
-            <p className="text-sm text-gris-400 mt-1">Vinculada como familiar</p>
+        ) : (
+          <div className="card text-center space-y-4 py-6">
+            <div className="text-5xl">👨‍👩‍👦</div>
+            <h2 className="text-xl font-bold text-gris-900">Invita a tu familiar</h2>
+            <p className="text-base text-gris-500">
+              Comparte un link para que tu familiar se vincule y puedas ver su progreso
+            </p>
+            <button
+              onClick={onInvite}
+              className="btn-primary w-full text-lg"
+            >
+              📤 Generar link de invitación
+            </button>
           </div>
-        </div>
+        )}
 
         {/* Stats Overview */}
-        <div className="grid grid-cols-3 gap-2 sm:gap-3">
-          <div className="card text-center space-y-2 py-4">
-            <div className="text-3xl font-bold text-azul-600">{totalProcedures}</div>
-            <p className="text-sm text-gris-500 font-medium">Trámites</p>
+        {isLinked && (
+          <div className="grid grid-cols-3 gap-2 sm:gap-3">
+            <div className="card text-center space-y-2 py-4">
+              <div className="text-3xl font-bold text-azul-600">{totalProcedures}</div>
+              <p className="text-sm text-gris-500 font-medium">Trámites</p>
+            </div>
+            <div className="card text-center space-y-2 py-4">
+              <div className="text-3xl font-bold text-verde-600">{soloProcedures}</div>
+              <p className="text-sm text-gris-500 font-medium">Sin ayuda</p>
+            </div>
+            <div className="card text-center space-y-2 py-4">
+              <div className="text-3xl font-bold text-gris-800">{avgIndependence}%</div>
+              <p className="text-sm text-gris-500 font-medium">Independencia</p>
+            </div>
           </div>
-          <div className="card text-center space-y-2 py-4">
-            <div className="text-3xl font-bold text-verde-600">{soloProcedures}</div>
-            <p className="text-sm text-gris-500 font-medium">Sin ayuda</p>
-          </div>
-          <div className="card text-center space-y-2 py-4">
-            <div className="text-3xl font-bold text-gris-800">{avgIndependence}%</div>
-            <p className="text-sm text-gris-500 font-medium">Independencia</p>
-          </div>
-        </div>
+        )}
 
         {/* Confidence Level */}
-        <div className="card space-y-4">
-          <h3 className="text-xl font-bold text-gris-800">Nivel de confianza digital</h3>
-          <div className="flex items-center gap-4">
-            <div className="flex-1">
-              <div className="h-4 bg-gris-200 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-gradient-to-r from-azul-400 to-azul-600 rounded-full transition-all duration-700"
-                  style={{ width: `${Math.min(avgIndependence + 10, 100)}%` }}
-                />
+        {isLinked && (
+          <div className="card space-y-4">
+            <h3 className="text-xl font-bold text-gris-800">Nivel de confianza digital</h3>
+            <div className="flex items-center gap-4">
+              <div className="flex-1">
+                <div className="h-4 bg-gris-200 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-gradient-to-r from-azul-400 to-azul-600 rounded-full transition-all duration-700"
+                    style={{ width: `${Math.min(avgIndependence + 10, 100)}%` }}
+                  />
+                </div>
               </div>
+              <span className="text-lg font-bold text-azul-600 min-w-[3rem] text-right">
+                {avgIndependence > 70 ? 'Alto' : avgIndependence > 40 ? 'Medio' : 'Bajo'}
+              </span>
             </div>
-            <span className="text-lg font-bold text-azul-600 min-w-[3rem] text-right">
-              {avgIndependence > 70 ? 'Alto' : avgIndependence > 40 ? 'Medio' : 'Bajo'}
-            </span>
+            <p className="text-base text-gris-500">
+              {avgIndependence > 70
+                ? `${userData.name} está ganando mucha independencia digital. ¡Sigue así!`
+                : avgIndependence > 40
+                ? `${userData.name} está mejorando. Con más práctica, logrará hacer los trámites sola.`
+                : totalProcedures === 0
+                ? `${userData.name} aún no ha completado ningún trámite. Cuando lo haga, aparecerá aquí.`
+                : `${userData.name} está empezando a aprender. Tu apoyo es muy importante para ella.`
+              }
+            </p>
           </div>
-          <p className="text-base text-gris-500">
-            {avgIndependence > 70
-              ? `${userData.name} está ganando mucha independencia digital. ¡Sigue así!`
-              : avgIndependence > 40
-              ? `${userData.name} está mejorando. Con más práctica, logrará hacer los trámites sola.`
-              : `${userData.name} está empezando a aprender. Tu apoyo es muy importante para ella.`
-            }
-          </p>
-        </div>
+        )}
 
         {/* Procedure History */}
         <div className="space-y-4">
@@ -99,24 +121,31 @@ export default function FamilyDashboard({ userData, procedureHistory, onBack }) 
           {procedureHistory.length === 0 ? (
             <div className="card text-center py-8 space-y-3">
               <div className="text-5xl" aria-hidden="true">📭</div>
-              <p className="text-lg text-gris-500">Aún no ha completado ningún trámite</p>
-              <p className="text-base text-gris-400">
-                Cuando {userData.name} complete un trámite, aparecerá aquí.
+              <p className="text-lg text-gris-500">
+                {isLinked
+                  ? `Aún no ha completado ningún trámite`
+                  : 'Vincula a tu familiar para ver su progreso'
+                }
               </p>
+              {isLinked && (
+                <p className="text-base text-gris-400">
+                  Cuando {userData.name} complete un trámite, aparecerá aquí.
+                </p>
+              )}
             </div>
           ) : (
             <div className="space-y-3">
               {procedureHistory.map((proc, index) => (
                 <div key={index} className="card flex items-center gap-4">
                   <div className="text-3xl flex-shrink-0" aria-hidden="true">
-                    {getCategoryEmoji(proc.procedureId)}
+                    {getCategoryEmoji(proc.procedure_id)}
                   </div>
                   <div className="flex-1 min-w-0">
                     <h4 className="text-lg font-bold text-gris-800 truncate">
-                      {proc.procedureTitle}
+                      {proc.procedure_title}
                     </h4>
                     <p className="text-sm text-gris-400">
-                      {formatDate(proc.completedAt)}
+                      {formatDate(proc.completed_at)}
                     </p>
                   </div>
                   <div className="flex-shrink-0">
@@ -129,23 +158,25 @@ export default function FamilyDashboard({ userData, procedureHistory, onBack }) 
         </div>
 
         {/* Tips for Family */}
-        <div className="card bg-azul-50 border-azul-200 space-y-3">
-          <h3 className="text-lg font-bold text-azul-800">💡 Consejos para ti</h3>
-          <ul className="space-y-2">
-            <li className="flex items-start gap-3">
-              <span className="text-lg text-azul-600 leading-snug shrink-0" aria-hidden="true">•</span>
-              <span className="text-base text-azul-700">Pregunta a {userData.name} cómo le fue con el trámite</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="text-lg text-azul-600 leading-snug shrink-0" aria-hidden="true">•</span>
-              <span className="text-base text-azul-700">Celebra cada trámite que haga sin ayuda</span>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="text-lg text-azul-600 leading-snug shrink-0" aria-hidden="true">•</span>
-              <span className="text-base text-azul-700">Si necesita ayuda, esté disponible pero no haga el trámite por ella</span>
-            </li>
-          </ul>
-        </div>
+        {isLinked && (
+          <div className="card bg-azul-50 border-azul-200 space-y-3">
+            <h3 className="text-lg font-bold text-azul-800">💡 Consejos para ti</h3>
+            <ul className="space-y-2">
+              <li className="flex items-start gap-3">
+                <span className="text-lg text-azul-600 leading-snug shrink-0" aria-hidden="true">•</span>
+                <span className="text-base text-azul-700">Pregunta a {userData.name} cómo le fue con el trámite</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-lg text-azul-600 leading-snug shrink-0" aria-hidden="true">•</span>
+                <span className="text-base text-azul-700">Celebra cada trámite que haga sin ayuda</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span className="text-lg text-azul-600 leading-snug shrink-0" aria-hidden="true">•</span>
+                <span className="text-base text-azul-700">Si necesita ayuda, esté disponible pero no haga el trámite por ella</span>
+              </li>
+            </ul>
+          </div>
+        )}
       </main>
     </div>
   );
